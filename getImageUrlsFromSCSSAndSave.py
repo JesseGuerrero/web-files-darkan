@@ -39,6 +39,7 @@ for absPathFile in walkDirectory(path):
                                     break
 
                             url = (base + after_base[:index])
+                            url = url.split("?")[0]
                             r = requests.get(url, allow_redirects=True)
 
                             open('./2012/' + url.split("/")[-1], 'wb').write(r.content)

@@ -37,6 +37,9 @@ for absPathFile in walkDirectory(path):
                                     break
                                 elif c == "(":
                                     splitter = "("
+                                    break
+                                elif c == "\"":
+                                    break
                             row = row.replace(row.split(image)[0].split(splitter)[-1], "https://raw.githubusercontent.com/JesseGuerrero/web-files-darkan/master/2012/")
                             print(f'{absPathFile}, line:{row}', end="")
                             count +=1
