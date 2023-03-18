@@ -16,6 +16,7 @@ def walkDirectory(root):
             result.append(filePath)
     return result
 
+import requests
 count = 0
 base = "https://web.archive.org/"
 for absPathFile in walkDirectory(path):
@@ -25,19 +26,25 @@ for absPathFile in walkDirectory(path):
     if(os.path.isfile(absPathFile)):
         with open(f'{absPathFile}', 'r') as fp:
             # read all lines using readline()
-            try:
+
                 linesRead = fp.readlines()
                 for row in linesRead:
-                    if row.find(base) != -1:
-                        after_base = row.split(base)[1]
-                        index = 0
-                        for i, c in enumerate(after_base):
-                            if c == "\'" or c == ")" or c == "\"":
-                                index = i
-                                break
-                        print(base + after_base[:index])
-                        count +=1
-            except:
-                pass
+                    try:
+                        if row.find(base) != -1:
+                            after_base = row.split(base)[1]
+                            index = 0
+                            for i, c in enumerate(after_base):
+                                if c == "\'" or c == ")" or c == "\"":
+                                    index = i
+                                    break
+
+                            url = (base + after_base[:index])
+                            r = requests.get(url, allow_redirects=True)
+
+                            open('./2012/' + url.split("/")[-1], 'wb').write(r.content)
+                            print(base + after_base[:index])
+                            count +=1
+                    except:
+                        pass
 print(f'count: {count}')
 #from last '/' check image name
